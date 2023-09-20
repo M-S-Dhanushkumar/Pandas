@@ -35,8 +35,8 @@ for file_name in extracted_files:
         # Write the data to the Excel file
         sas_data.to_excel(excel_writer, sheet_name=file_name[:-8], index=False)
 
-        # Save the Excel file
-        excel_writer.save()
+# Save the Excel file
+excel_writer.save()
 
 print("Conversion complete. Your Excel file is ready!")
 
