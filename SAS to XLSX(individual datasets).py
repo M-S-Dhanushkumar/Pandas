@@ -28,11 +28,22 @@ for file_name in extracted_files:
         
         # Determine the output Excel file name
         excel_file_name = f'xlsx_data/{file_name[:-8]}.xlsx'
-        
+
+        # Define a function to decode bytes to strings
+        def decode_bytes(x):
+          try:
+            return x.decode('utf-8')
+        except UnicodeDecodeError:
+            return str(x)  # If decoding fails, convert to a string representation
+
+        # Apply the decoding function to your DataFrame
+        sas_data = sas_data.applymap(decode_bytes)
+
         # Create an Excel writer for the individual file
         excel_writer = pd.ExcelWriter(excel_file_name, engine='xlsxwriter')
+        
         # Convert bytes to string data by decoding
-        sas_data = sas_data.applymap(lambda x: x.decode('utf-8') if isinstance(x, bytes) else x)
+        #sas_data = sas_data.applymap(lambda x: x.decode('utf-8') if isinstance(x, bytes) else x)
         
         # Write the data to the Excel file
         sas_data.to_excel(excel_writer, sheet_name='Sheet1', index=False)
