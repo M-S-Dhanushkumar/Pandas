@@ -4,10 +4,10 @@ import os
 import shutil
 
 # Specify the path to the SAS zip file
-sas_zip_file_path = '/content/Input_Zip/LIVE_ABBOTTINDIA.ECASELINK.COM_DIEN-122-0195_25JUL2023_002726_DEFAULT.zip'
+sas_zip_file_path = '/content/LIVE_ABBOTTINDIA.ECASELINK.COM_ESDY-122-0279_21SEP2023_122033_DEFAULT (1).zip'
 
-# Specify the output Excel file name (without extension)
-output_excel_file = '/content/Output_xlsx'
+# Specify the output Excel file name (with extension)
+output_excel_file = '/content/Output_xlsx.xlsx'  # Add '.xlsx' extension
 
 # Create a directory to store extracted SAS datasets
 os.makedirs('unzipped_data', exist_ok=True)
@@ -20,7 +20,7 @@ with zipfile.ZipFile(sas_zip_file_path, 'r') as zip_ref:
     extracted_files = zip_ref.namelist()
 
 # Create an Excel writer
-excel_writer = pd.ExcelWriter(f'{output_excel_file}.xlsx', engine='xlsxwriter')
+excel_writer = pd.ExcelWriter(output_excel_file, engine='xlsxwriter')
 
 # Loop through extracted files and convert to Excel format
 for file_name in extracted_files:
@@ -29,11 +29,16 @@ for file_name in extracted_files:
         # Read the SAS dataset using sas7bdat
         sas_data = pd.read_sas(f'unzipped_data/{file_name}', format='sas7bdat')
 
-        # Convert bytes to string data by decoding
-        sas_data = sas_data.applymap(lambda x: x.decode('utf-8') if isinstance(x, bytes) else x)
+        # Check if the dataset is not empty
+        if not sas_data.empty:
+            # Modify the sheet name to remove trailing spaces and periods
+            sheet_name = file_name[:-8].strip(" .")
+
+            # Convert bytes to string data by decoding
+            sas_data = sas_data.applymap(lambda x: x.decode('utf-8', errors='replace') if isinstance(x, bytes) else x)
         
-        # Write the data to the Excel file
-        sas_data.to_excel(excel_writer, sheet_name=file_name[:-8], index=False)
+            # Write the data to the Excel file
+            sas_data.to_excel(excel_writer, sheet_name=sheet_name, index=False)
 
 # Save the Excel file
 excel_writer.save()
