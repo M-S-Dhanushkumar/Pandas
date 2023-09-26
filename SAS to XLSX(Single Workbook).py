@@ -4,10 +4,10 @@ import os
 import shutil
 
 # Specify the path to the SAS zip file
-sas_zip_file_path = '/content/LIVE_ABBOTTINDIA.ECASELINK.COM_ESDY-122-0279_21SEP2023_122033_DEFAULT (1).zip'
+sas_zip_file_path = '/content/Input(Replace your file path).zip'
 
 # Specify the output Excel file name (with extension)
-output_excel_file = '/content/Output_xlsx.xlsx'  # Add '.xlsx' extension
+output_excel_file = '/content/(Rename).xlsx'  # Add '.xlsx' extension
 
 # Create a directory to store extracted SAS datasets
 os.makedirs('unzipped_data', exist_ok=True)
