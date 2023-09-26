@@ -4,7 +4,7 @@ import os
 import shutil
 
 # Specify the path to the SAS zip file
-sas_zip_file_path = '/content/LIVE_ABBOTTINDIA.ECASELINK.COM_ESDY-122-0279_21SEP2023_122033_DEFAULT (1).zip'
+sas_zip_file_path = '/content/(Replace your path).zip'
 
 # Create a directory to store extracted SAS datasets
 os.makedirs('unzipped_data', exist_ok=True)
